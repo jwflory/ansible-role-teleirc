@@ -1,2 +1,27 @@
 ---
-# handlers file for teleirc
+- name: install build dependencies
+  package:
+    state: present
+    name:
+      - gcc-c++
+      - libicu-devel
+
+- name: install runtime dependencies with yarn
+  become_user: teleirc
+  command: "yarn"
+  args:
+    chdir: "/usr/lib64/teleirc/{{ item.value.cn }}/"
+  loop: "{{ bots|dict2items }}"
+
+- name: remove build dependencies
+  package:
+    state: absent
+    name:
+      - gcc-c++
+      - libicu-devel
+
+- name: restart teleirc
+  service:
+    name: "teleirc-{{ item.value.cn }}.service"
+    state: restarted
+  loop: "{{ bots|dict2items }}"
