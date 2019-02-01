@@ -1,38 +1,111 @@
-Role Name
-=========
+Ansible Role: teleirc
+=====================
 
-A brief description of the role goes here.
+Deploy RITlug/teleirc chat bots to bridge IRC channels and Telegram groups
 
-Requirements
-------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+## Requirements
 
-Role Variables
---------------
+No special requirements.
+Note this role requires root access; either run it in a playbook with a global `become: yes` or invoke the role in your playbook:
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+```yaml
+- hosts: servers
+  roles:
+    - role: jwflory.teleirc
+      become: yes
+```
 
-Dependencies
-------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+## Role Variables
 
-Example Playbook
-----------------
+Available variables are listed below, along with default values (see `defaults/main.yml`):
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+### `defaults/main.yml`
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```yaml
+default_irc_server: chat.freenode.net
+default_irc_nickserv_service: NickServ
+default_version: v1.2.2
+```
 
-License
--------
+* **`default_irc_server`**: Default IRC server to connect to (defaults to Freenode)
+* **`default_irc_nickserv_service`**: Default authentication service for IRC server (defaults to NickServ)
+* **`default_version`**: Default version of Teleirc to deploy (corresponds to git tag releases in upstream project)
 
-BSD
+### `vars/main.yml`
 
-Author Information
-------------------
+```yaml
+bots:
+  my_example_bot:
+    cn: "my-example-bot"
+    irc_blacklist: "noisy-irc-bot,ci-build-alerts"
+    irc_bot_name: tg-my-example-bot
+    irc_channel: "#ritlug-teleirc-sandbox"
+    irc_server: "{{ default_irc_server }}"
+    irc_nickserv_service: "{{ default_irc_nickserv_service }}"
+    irc_nickserv_password: "{{ vault_bots.my_example_bot.vault_irc_nickserv_password }}"
+    teleirc_token: "{{ vault_bots.my_example_bot.vault_teleirc_token }}"
+    teleirc_chat_id: "{{ vault_bots.my_example_bot.vault_teleirc_chat_id }}"
+    imgur_client_id: "{{ vault_default_imgur_client_id }}"
+    version: "{{ default_version }}"
+```
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+* **`bots`**: List of all bots
+* **`bots.my_example_bot`**: Example of a single Teleirc bot
+* **`bots.my_example_bot.cn`**: Common name. Used for directory names, systemd service name, and more.
+* **`bots.my_example_bot.irc_blacklist`**: Comma-separated string of IRC nicks to ignore
+* **`bots.my_example_bot.irc_bot_name`**: IRC nick of Teleirc bridge bot
+* **`bots.my_example_bot.irc_channel`**: IRC channel for bot to join
+* **`bots.my_example_bot.irc_server`**: IRC server for bot to connect to (uses `defaults/main.yml`)
+* **`bots.my_example_bot.irc_nickserv_service`**: IRC account authentication method (uses `defaults/main.yml`)
+* **`bots.my_example_bot.irc_nickserv_password`**: _See below_
+* **`bots.my_example_bot.teleirc_token`**: _See below_
+* **`bots.my_example_bot.teleirc_chat_id`**: _See below_
+* **`bots.my_example_bot.imgur_client_id`**: _See below_
+* **`bots.my_example_bot.version`**: What version of Teleirc to deploy (uses `defaults/main.yml`)
+
+### `vars/vault.yml`
+
+```yaml
+# encrypt this with Ansible Vault before committing!
+
+vault_default_imgur_client_id: "000000000000000"
+
+vault_bots:
+  my_example_bot:
+    vault_irc_nickserv_password: ""
+    vault_teleirc_token: "000000000:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    vault_teleirc_chat_id: "-0000000000000"
+```
+
+* **`default_imgur_client_id`**: Imgur API client ID to upload images from Telegram to Imgur
+* **`vault_bots`**: List of all bots
+* **`vault_bots.my_example_bot`**: Example of secrets for a single Teleirc bot
+* **`vault_bots.my_example_bot.vault_irc_nickserv_password`**: Password to NickServ account on IRC server
+* **`vault_bots.my_example_bot.vault_teleirc_token`**: Telegram API bot token provided by the BotFather
+* **`vault_bots.my_example_bot.vault_teleirc_chat_id`**: Telegram chat ID of group for bridging to IRC
+
+
+## Dependencies
+
+None.
+
+
+## Example Playbook
+
+```yaml
+- hosts: servers
+  roles:
+     - role: jwflory.teleirc
+```
+
+## License
+
+[Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/ "Mozilla Public License – Mozilla")
+
+
+## Author Information
+
+This role was created in 2018 by [Justin W. Flory](https://justinwflory.com/).
+Find him on [GitHub](https://github.com/jwflory "Check out other things I'm working on!") and [LinkedIn](https://www.linkedin.com/in/justinwflory/ "See what I'm doing out in the world…").
