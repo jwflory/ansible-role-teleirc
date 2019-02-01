@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: teleirc
   author: Justin W. Flory
   description: Deploy RITlug/teleirc chat bots to bridge IRC channels and Telegram groups
 
