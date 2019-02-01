@@ -1,4 +1,6 @@
 ---
+# encrypt this with Ansible Vault before committing!
+
 vault_default_imgur_client_id: "000000000000000"
 
 vault_bots:
