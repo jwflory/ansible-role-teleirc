@@ -1,4 +1,7 @@
 ---
+authorized_users:
+  - myuseraccount
+
 bots:
   my_example_bot:
     cn: "my-example-bot"
