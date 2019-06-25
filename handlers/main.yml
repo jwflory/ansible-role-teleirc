@@ -5,9 +5,8 @@
     name:
       - gcc-c++
       - libicu-devel
+      - make
 
-  # Ignore errors because `yarn` sometimes produces non-fatal exit codes that
-  # Ansible interprets as a fatal exit code
 - name: install runtime dependencies with yarn
   become: yes
   become_user: teleirc
@@ -15,7 +14,6 @@
   args:
     chdir: "/usr/lib64/teleirc/{{ item.value.cn }}/"
   loop: "{{ bots|dict2items }}"
-  ignore_errors: yes
 
 - name: remove build dependencies
   package:
@@ -23,6 +21,7 @@
     name:
       - gcc-c++
       - libicu-devel
+      - make
 
 - name: restart teleirc
   service:
