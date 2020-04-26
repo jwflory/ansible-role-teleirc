@@ -5,6 +5,9 @@
 #                                                                             #
 ###############################################################################
 
+# See the Config File Glossary for instructions.
+# https://docs.teleirc.com/en/latest/config-file-glossary/
+
 ###############################################################################
 #                                                                             #
 #                       IRC configuration settings                            #
@@ -13,14 +16,21 @@
 
 IRC_BLACKLIST="{{ item.value.irc_blacklist }}"
 IRC_BOT_NAME={{ item.value.irc_bot_name }}
-IRC_CHANNEL={{ item.value.irc_channel }}
+IRC_CHANNEL="{{ item.value.irc_channel }}"
+IRC_CHANNEL_KEY=""
 IRC_SEND_STICKER_EMOJI=true
+IRC_SEND_DOCUMENT=false
 IRC_PREFIX="<"
 IRC_SUFFIX=">"
 IRC_SERVER={{ item.value.irc_server }}
+IRC_SERVER_PASSWORD=""
+IRC_PORT=6697
+IRC_CERT_ALLOW_SELFSIGNED=false
+IRC_CERT_ALLOW_EXPIRED=false
 IRC_NICKSERV_SERVICE={{ item.value.irc_nickserv_service }}
 IRC_NICKSERV_PASS="{{ item.value.irc_nickserv_password }}"
 IRC_EDITED_PREFIX="(edited) "
+IRC_MAX_MESSAGE_LENGTH=400
 
 
 ###############################################################################
@@ -29,16 +39,16 @@ IRC_EDITED_PREFIX="(edited) "
 #                                                                             #
 ###############################################################################
 
+TELEGRAM_CHAT_ID={{ item.value.teleirc_chat_id }}
 TELEIRC_TOKEN={{ item.value.teleirc_token }}
 MAX_MESSAGES_PER_MINUTE=20
 SHOW_ACTION_MESSAGE=true
 SHOW_JOIN_MESSAGE=false
 SHOW_KICK_MESSAGE=true
 SHOW_LEAVE_MESSAGE=false
-TELEGRAM_CHAT_ID={{ item.value.teleirc_chat_id }}
 
 
-###############################################################################
+################################################################################
 #                                                                             #
 #                      Imgur configuration settings                           #
 #                                                                             #
@@ -46,15 +56,3 @@ TELEGRAM_CHAT_ID={{ item.value.teleirc_chat_id }}
 
 USE_IMGUR_FOR_IMAGES=true
 IMGUR_CLIENT_ID={{ item.value.imgur_client_id }}
-
-
-###############################################################################
-#                                                                             #
-#                      Misc. required env variables                           #
-#                -- not meant for user config, don't touch --                 #
-#                                                                             #
-###############################################################################
-
-# https://github.com/yagop/node-telegram-bot-api/issues/319#issuecomment-324963294
-NTBA_FIX_319=1
-
