@@ -16,7 +16,7 @@
 
 - name: build teleirc binary
   command:
-    cmd: go build cmd/teleirc.go
+    cmd: bash build_binary.sh
     chdir: "/tmp/teleirc/"
 
 - name: push teleirc binary to /usr/local/bin
