@@ -54,5 +54,4 @@ SHOW_LEAVE_MESSAGE=false
 #                                                                             #
 ###############################################################################
 
-USE_IMGUR_FOR_IMAGES=true
 IMGUR_CLIENT_ID={{ item.value.imgur_client_id }}
